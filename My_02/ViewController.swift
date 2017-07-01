@@ -10,11 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let Pointi: UIImage = UIImage(named: "Point.png")!
-    let Pointv: UIImageView = UIImageView()
+    let Pointi:UIImage = UIImage(named: "Point.png")!
+    let Pointv:UIImageView = UIImageView()
     
-    var x: Int = 0
-    var y: Int = 0
+    var xp:Int = 0
+    var yp:Int = 0
+    
+    var iw:Int = 0
+    var xw:Int = 0
+    var yw:Int = 0
+    let Walli:UIImage = UIImage(named: "Wall.png")!
     
     let X:[[Int]] =
            [[0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310],   //  1
@@ -53,7 +58,7 @@ class ViewController: UIViewController {
     let Y:[[Int]] =
            [[ 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],  //  1
             [ 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],  //  2
-            [ 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 20],  //  3
+            [ 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],  //  3
             [ 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],  //  4
             [ 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60],  //  5
             [ 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70],  //  6
@@ -83,7 +88,13 @@ class ViewController: UIViewController {
             [310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310,310],  // 30
             [320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320,320],  // 31
             [330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330,330]]  // 32
+    
+    var Z:[[Int]] = Array(repeating: (Array(repeating: 0, count: 32)), count: 32)
 
+    var S:[Int] = Array(0...1023)
+    
+    @IBOutlet weak var DebugLabel: UILabel!
+    
     func PointView() {                  // Draw point + parameters point
         Pointv.image = Pointi
         Pointv.frame.size.width = 10
@@ -92,7 +103,7 @@ class ViewController: UIViewController {
         view.addSubview(Pointv)
     }
     
-    func GetRandomCoord() -> (x: Int, y:Int) {  // Create random coordinates
+    func GetRandomCoord() -> (x:Int, y:Int) {  // Create random coordinates
         let x = Int(arc4random_uniform(32))
         let y = Int(arc4random_uniform(32))
         
@@ -100,34 +111,78 @@ class ViewController: UIViewController {
     }
     
     func PointChangeCoord(x:Int, y:Int) -> () { // Move point to coordinates
-        Pointv.frame.origin.x = CGFloat(X[y][x])
-        Pointv.frame.origin.y = CGFloat(Y[y][x])
+        if (x<=31 && x>=0 && y<=31 && y>=0 && self.Z[y][x] != -1) {
+            UIView.animate(withDuration: 0.1, animations: {
+                self.Pointv.frame.origin.x = CGFloat(self.X[y][x])
+                self.Pointv.frame.origin.y = CGFloat(self.Y[y][x])
+            })
+            self.DebugLabel.text = String("\(x); \(y)")
+        } else if (x>31) {self.xp -= 1}
+          else if (x<0)  {self.xp += 1}
+          else if (y>31) {self.yp -= 1}
+          else if (y<0)  {self.yp += 1}
+          else if (self.Z[y][x] == 1) {self.DebugLabel.text = String("Oops")}
+        
         
         view.addSubview(Pointv)
     }
-
-    @IBAction func PointMoveView(sender: UIButton) {
-        NSLog("\(sender.tag)")
-        switch sender.tag {
-        case 1: y-=1
-        case 2: y+=1
-        case 3: x-=1
-        case 4: x+=1
-        default: break
+    
+    func GetRandomWall(count: Int) -> () {
+        
+        for _ in 1...count {
+            repeat {
+                var RandIndS:Int = Int(arc4random_uniform(UInt32(self.S.count)))
+                var RandInd:Int = self.S.remove(at: RandIndS)
+                
+                xw = Ind2ij(Ind: RandInd).i
+                yw = Ind2ij(Ind: RandInd).j
+                self.Z[yw][xw] = 1                                                  ////!!!!!!!!!!!!!\\\\\\\
+            } while (xw == self.xp && yw == self.yp)
+            
+            DrawRandomWall(x: xw, y: yw)
         }
-        PointChangeCoord(x: x, y: y)
     }
     
+    func Ind2ij(Ind:Int) -> (i:Int ,j:Int) {
+        let i:Int = Ind/32
+        let j:Int = Ind-i*32
+        
+        return(i, j)
+    }
+
+    func DrawRandomWall(x:Int, y:Int) -> () {
+        let Wallv: UIImageView = UIImageView()
+        Wallv.image = self.Walli
+        Wallv.frame.size.width = 10
+        Wallv.frame.size.height = 10
+        Wallv.frame.origin.x = CGFloat(self.X[y][x])
+        Wallv.frame.origin.y = CGFloat(self.Y[y][x])
+        
+        view.addSubview(Wallv)
+    }
+
+    @IBAction func PointMoveView(sender: UIButton) {
+        switch sender.tag {
+        case 1: yp-=1
+        case 2: yp+=1
+        case 3: xp-=1
+        case 4: xp+=1
+        default: break
+        }
+        PointChangeCoord(x: xp, y: yp)
+        GetRandomWall(count: 4)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         PointView()
-        x = GetRandomCoord().x
-        y = GetRandomCoord().y
+        xp = GetRandomCoord().x
+        yp = GetRandomCoord().y
         
-        PointChangeCoord(x: x, y: y)
+        PointChangeCoord(x: xp, y: yp)
         
 
     }
