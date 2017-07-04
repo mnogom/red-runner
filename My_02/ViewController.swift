@@ -15,9 +15,11 @@ class ViewController: UIViewController {
     
     var xp:Int = 0
     var yp:Int = 0
+    var direction:Int = 0
     
     var iw:Int = 0
     var xw:Int = 0
+
     var yw:Int = 0
     let Walli:UIImage = UIImage(named: "Wall.png")!
     
@@ -111,34 +113,40 @@ class ViewController: UIViewController {
     }
     
     func PointChangeCoord(x:Int, y:Int) -> () { // Move point to coordinates
-        if (x<=31 && x>=0 && y<=31 && y>=0 && self.Z[y][x] != -1) {
+        if (x<=31 && x>=0 && y<=31 && y>=0 && self.Z[y][x] != 1) {
             UIView.animate(withDuration: 0.1, animations: {
                 self.Pointv.frame.origin.x = CGFloat(self.X[y][x])
                 self.Pointv.frame.origin.y = CGFloat(self.Y[y][x])
             })
-            self.DebugLabel.text = String("\(x); \(y)")
+            
         } else if (x>31) {self.xp -= 1}
           else if (x<0)  {self.xp += 1}
           else if (y>31) {self.yp -= 1}
           else if (y<0)  {self.yp += 1}
-          else if (self.Z[y][x] == 1) {self.DebugLabel.text = String("Oops")}
+          else if (self.Z[y][x] == 1) {
+            switch self.direction {
+            case 1: yp+=1
+            case 2: yp-=1
+            case 3: xp+=1
+            case 4: xp-=1
+            default: break
+            }
+        }
         
         
         view.addSubview(Pointv)
     }
     
     func GetRandomWall(count: Int) -> () {
-        
         for _ in 1...count {
             repeat {
-                var RandIndS:Int = Int(arc4random_uniform(UInt32(self.S.count)))
-                var RandInd:Int = self.S.remove(at: RandIndS)
+                let RandIndS:Int = Int(arc4random_uniform(UInt32(self.S.count)))
+                let RandInd:Int = self.S.remove(at: RandIndS)
                 
                 xw = Ind2ij(Ind: RandInd).i
                 yw = Ind2ij(Ind: RandInd).j
-                self.Z[yw][xw] = 1                                                  ////!!!!!!!!!!!!!\\\\\\\
             } while (xw == self.xp && yw == self.yp)
-            
+            self.Z[yw][xw] = 1
             DrawRandomWall(x: xw, y: yw)
         }
     }
@@ -162,7 +170,8 @@ class ViewController: UIViewController {
     }
 
     @IBAction func PointMoveView(sender: UIButton) {
-        switch sender.tag {
+        direction = sender.tag
+        switch direction {
         case 1: yp-=1
         case 2: yp+=1
         case 3: xp-=1
@@ -183,8 +192,6 @@ class ViewController: UIViewController {
         yp = GetRandomCoord().y
         
         PointChangeCoord(x: xp, y: yp)
-        
-
     }
 
     

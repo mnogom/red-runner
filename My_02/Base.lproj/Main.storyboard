@@ -26,7 +26,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOQ-JU-hW0">
-                                <rect key="frame" x="144" y="405" width="32" height="32"/>
+                                <rect key="frame" x="128" y="384" width="64" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
@@ -37,7 +37,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1B-tU-laH">
-                                <rect key="frame" x="144" y="469" width="32" height="32"/>
+                                <rect key="frame" x="128" y="496" width="64" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Bottom.png"/>
                                 <connections>
@@ -45,7 +45,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HId-Bv-R6Z">
-                                <rect key="frame" x="112" y="437" width="32" height="32"/>
+                                <rect key="frame" x="88" y="424" width="32" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Left.png"/>
                                 <connections>
@@ -53,25 +53,16 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjq-Vh-eID">
-                                <rect key="frame" x="176" y="437" width="32" height="32"/>
+                                <rect key="frame" x="200" y="424" width="32" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Right.png"/>
                                 <connections>
                                     <action selector="PointMoveViewWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a2X-2q-pCL"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7P-zk-xc1">
-                                <rect key="frame" x="225" y="367" width="62" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <connections>
-                        <outlet property="DebugLabel" destination="h7P-zk-xc1" id="8rR-kL-Ml9"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -79,10 +70,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Bottom.png" width="32" height="32"/>
-        <image name="Left.png" width="32" height="32"/>
+        <image name="Bottom.png" width="64" height="64"/>
+        <image name="Left.png" width="64" height="64"/>
         <image name="Pole.png" width="320" height="320"/>
-        <image name="Right.png" width="32" height="32"/>
-        <image name="Top.png" width="32" height="32"/>
+        <image name="Right.png" width="64" height="64"/>
+        <image name="Top.png" width="64" height="64"/>
     </resources>
 </document>
